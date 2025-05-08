@@ -2,6 +2,10 @@
 
 An elegant, accessible, and responsive web-based spinner for the classic game of Twister. No ads, no tracking — just spin and play!
 
+## Demo
+
+[🌀 Try it live!](https://danielmroczek.github.io/twister-spinner/)
+
 ## Features
 
 - 🎨 Colorful, animated background
