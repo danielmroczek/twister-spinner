@@ -1,0 +1,2 @@
+- [ ] TTS - https://addpipe.com/web-speech-api-text-to-speech-demo/
+- [ ] autoplay z konfigurowalnym czasie
