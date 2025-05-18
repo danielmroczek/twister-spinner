@@ -1,4 +1,5 @@
 import { i18n, gameConfig } from './config.js';
+import { speakText } from './speak.js';
 
 /**
  * TwisterSpinner class handles the game logic and UI interactions
@@ -137,6 +138,10 @@ export default class TwisterSpinner {
 
     // Update UI
     this.updateDisplay();
+    
+    // Speak the result text that's displayed in the UI
+    const resultText = document.getElementById('results').textContent;
+    speakText(resultText, this.language);
 
     // Stop animation
     setTimeout(() => {
