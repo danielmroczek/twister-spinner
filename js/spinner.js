@@ -14,6 +14,7 @@ export default class TwisterSpinner {
     this.translations = i18n[language];
     this.currentSpin = null;
     this.isSpinning = false;
+    this.lastSelection = null; // Track the last body part + side combination
 
     // Set animation duration CSS variable from config
     document.documentElement.style.setProperty('--anim-duration', `${gameConfig.animationDuration}ms`);
@@ -130,11 +131,10 @@ export default class TwisterSpinner {
    */
   finalizeSpin() {
     // Select random values
-    const bodyPart = this.getRandomFrom(gameConfig.bodyParts);
-    const side = this.getRandomFrom(gameConfig.sides);
+    const newSelection = this.getNewSelection();
     const color = this.getRandomFrom(gameConfig.colors);
 
-    this.currentSpin = { bodyPart, side, color };
+    this.currentSpin = { ...newSelection, color };
 
     // Update UI
     this.updateDisplay();
@@ -150,6 +150,35 @@ export default class TwisterSpinner {
       background.classList.remove('color-shift');
       this.isSpinning = false;
     }, 500);
+  }
+
+  /**
+   * Generates a new random selection of a body part and side, ensuring it is not the same as the last selection.
+   *
+   * @returns {{ bodyPart: String, side: String }} An object containing:
+   *   - bodyPart: The selected body part from `gameConfig.bodyParts`.
+   *   - side: The selected side from `gameConfig.sides`.
+   *   The returned combination will always differ from the previous selection stored in `this.lastSelection`.
+   */
+  getNewSelection() {
+    const possibleCombinations = [];
+
+    for (const bodyPart of gameConfig.bodyParts) {
+      for (const side of gameConfig.sides) {
+        if (
+          this.lastSelection &&
+          this.lastSelection.bodyPart.id === bodyPart.id &&
+          this.lastSelection.side.id === side.id
+        ) {
+          continue;
+        }
+        possibleCombinations.push({ bodyPart, side });
+      }
+    }
+
+    const newSelection = this.getRandomFrom(possibleCombinations);
+    this.lastSelection = newSelection; // Update the last selection
+    return newSelection;
   }
 
   /**
